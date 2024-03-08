@@ -1,0 +1,48 @@
+# Microk8s local setup
+
+## About
+
+This is my Minikube setup for my Mac Silicon
+
+What it does:
+
+5. Asks for a Dynatrace token
+6. Containerizes a small Ruby app
+7. Pushes the app
+8. Pushes the Dynatrace Otel Collector
+9. Sends OTel data to Dynatrace
+
+## Install
+
+Install multipass
+
+```
+brew install multipass
+```
+
+Create a VM
+
+```
+multipass launch --name microk8s-vm --mem 4G --disk 40G
+```
+
+Shell into it
+```
+multipass shell microk8s-vm
+```
+
+Grab this script and run it
+
+```
+git clone https://github.com/mreider/k8s.git
+cd k8s
+./setup.sh
+
+```
+
+Enter your Dynatrace API endpoint
+Enter your Dynatrace Token:
+
+That's it!
+
+
