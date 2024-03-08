@@ -1,5 +1,4 @@
 #!/bin/bash
-sudo su
 snap install docker
 snap install microk8s --classic --channel=1.28/stable
 microk8s enable registry
