@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
       - name: proxy
-        image: proxy:latest
+        image: localhost:5000/proxy:v1.0

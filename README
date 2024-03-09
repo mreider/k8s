@@ -2,36 +2,31 @@
 
 ## About
 
-This is my Minikube setup for my Mac Silicon
+This is my Kind setup for my Mac Silicon
 
 What it does:
 
-5. Asks for a Dynatrace token
-6. Containerizes a small Ruby app
-7. Pushes the app
-8. Pushes the Dynatrace Otel Collector
-9. Sends OTel data to Dynatrace
+1. Asks for a Dynatrace token
+2. Containerizes a small Ruby app
+3. Pushes the app
+4. Pushes the Dynatrace Otel Collector
+5. Sends OTel data to Dynatrace
 
-## Install
-
-Install multipass
+## Install Podman Desktop and kubectl
 
 ```
-brew install multipass
-```
-
-Create a VM
+brew install podman-desktop kubectl
 
 ```
-multipass launch --name microk8s-vm --mem 4G --disk 40G
-```
 
-Shell into it
-```
-multipass shell microk8s-vm
-```
+## Open Podman Desktop and install:
 
-Grab this script and run it
+- Podman
+- Kind
+
+Make sure Docker Compatability is enabled.
+
+## Clone and run
 
 ```
 git clone https://github.com/mreider/k8s.git
