@@ -1,5 +1,6 @@
 import time
 import requests
+import random
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.resources import Resource
@@ -27,4 +28,4 @@ def call_frontend():
 if __name__ == "__main__":
     while True:
         call_frontend()
-        time.sleep(3)
+        time.sleep(random.uniform(3, 5))

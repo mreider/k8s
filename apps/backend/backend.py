@@ -1,5 +1,6 @@
 from flask import Flask
 import time
+import random
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.resources import Resource
@@ -23,7 +24,7 @@ tracer = trace.get_tracer(__name__)
 @app.route("/")
 def receive_order():
     with tracer.start_as_current_span("receive-order"):
-        time.sleep(0.5)
+        time.sleep(random.uniform(0.2, 0.8))
         return "ok", 200
 
 if __name__ == "__main__":
