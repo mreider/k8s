@@ -17,7 +17,9 @@ nerdctl -n k8s.io load -i proxy-v1.0.tar
 echo "Deploying"
 kubectl  apply -f deployments/namespace-orders.yaml
 kubectl delete secret dynatrace-otelcol-dt-api-credentials -n orders
+kubectl delete configmap dynatrace-otel-collector-config -n orders
 kubectl create secret generic dynatrace-otelcol-dt-api-credentials -n orders --from-literal=DT_API_ENDPOINT="https://$DT_ENDPOINT" --from-literal=DT_API_TOKEN="$DT_TOKEN"
+kubectl  apply -f deployments/collector-configmap.yaml
 kubectl  apply -f deployments/deployment-collector.yaml
 kubectl  apply -f deployments/deployment-backend.yaml
 kubectl  apply -f deployments/deployment-frontend.yaml
@@ -25,5 +27,6 @@ kubectl  apply -f deployments/deployment-proxy.yaml
 kubectl  set env deployment/backend -n orders UPDATE_TIME="$(date)"
 kubectl  set env deployment/frontend -n orders UPDATE_TIME="$(date)"
 kubectl  set env deployment/proxy -n orders UPDATE_TIME="$(date)"
+kubectl  set env deployment/dynatrace-otel-collector-deployment -n orders UPDATE_TIME="$(date)"
 rm -f backend-v1.0.tar frontend-v1.0.tar proxy-v1.0.tar
 echo "Setup complete."
