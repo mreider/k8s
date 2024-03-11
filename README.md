@@ -8,7 +8,7 @@ What it does:
 
 1. Asks for a Dynatrace token
 2. Containerizes a small Python app
-3. Pushes the app and the Dynatrace Otel Collector
+3. Pushes the app and the Dynatrace Otel Collector to local k3s
 5. Sends OTel data to Dynatrace
 
 ## Install Colima
