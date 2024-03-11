@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dynatrace-otel-collector-config
+  namespace: orders
+data:
+  collector.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    exporters:
+      otlphttp:
+        endpoint: "${DT_API_ENDPOINT}/api/v2/otlp/v1/traces"
+        headers:
+          Authorization: "Api-Token ${DT_API_TOKEN}"
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [otlphttp]
+        metrics:
+          receivers: [otlp]
+          processors: []
+          exporters: [otlphttp]
+        logs:
+          receivers: [otlp]
+          processors: []
+          exporters: [otlphttp]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynatrace-otel-collector-deployment
+  namespace: orders
+  labels:
+    app: dynatrace-otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dynatrace-otel-collector
+  template:
+    metadata:
+      labels:
+        app: dynatrace-otel-collector
+    spec:
+      containers:
+      - name: dynatrace-otel-collector
+        image: ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:latest
+        ports:
+        - containerPort: 4317 # Adjust if your collector uses different ports
+        - containerPort: 4318
+        - containerPort: 8888 # If you need the health-check or metrics endpoint
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        env:
+        - name: DT_API_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: dynatrace-otelcol-dt-api-credentials
+              key: DT_API_ENDPOINT
+        - name: DT_API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: dynatrace-otelcol-dt-api-credentials
+              key: DT_API_TOKEN
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/otel/collector
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: dynatrace-otel-collector-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dynatrace-otel-collector-service
+  namespace: orders
+spec:
+  selector:
+    app: dynatrace-otel-collector
+  ports:
+  - protocol: TCP
+    port: 4317
+    targetPort: 4317
+  - protocol: TCP
+    port: 4318
+    targetPort: 4318
+  - protocol: TCP
+    port: 8888
+    targetPort: 8888
+  type: ClusterIP

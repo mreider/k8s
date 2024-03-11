@@ -12,21 +12,16 @@ What it does:
 4. Pushes the Dynatrace Otel Collector
 5. Sends OTel data to Dynatrace
 
-## Install Podman Desktop and kubectl
+## Install Podman Desktop and Minikube
 
-```
-brew install podman-desktop kubectl
+Visit the podman release page and install the latest
 
-```
+[Podman on Github](https://github.com/containers/podman/releases)
 
-## Open Podman Desktop and install:
+Visit the Minkube release page, grab the latest, and put it in /usr/local/bin/
 
-- Podman
-- Kind
+[Minikube on Github](https://github.com/kubernetes/minikube/releases)
 
-Make sure Docker Compatability is enabled.
-
-## Clone and run
 
 ```
 git clone https://github.com/mreider/k8s.git

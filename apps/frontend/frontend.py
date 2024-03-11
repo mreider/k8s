@@ -11,13 +11,13 @@ app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 
 provider = TracerProvider()
-processor = BatchSpanProcessor(OTLPSpanExporter())
+processor = BatchSpanProcessor(OTLPSpanExporter(endpoint="http://dynatrace-collector-service:4318"))
 provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
 
 tracer = trace.get_tracer(__name__)
 
-BACKEND_URL = "http://backend:5000/"
+BACKEND_URL = "http://backend-service:6000/"
 
 @app.route("/")
 def order():

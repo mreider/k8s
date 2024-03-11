@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: localhost:5000/frontend:v1.0
-        imagePullPolicy: Always
+        image: frontend:v1.0
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
 ---

@@ -15,4 +15,5 @@ spec:
     spec:
       containers:
       - name: proxy
-        image: localhost:5000/proxy:v1.0
+        image: proxy:v1.0
+        imagePullPolicy: IfNotPresent
