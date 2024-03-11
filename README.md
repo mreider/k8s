@@ -1,8 +1,8 @@
-# Microk8s local setup
+# Colima local setup
 
 ## About
 
-This is my Kind setup for my Mac Silicon
+This is my Colima setup for my Mac Silicon
 
 What it does:
 
@@ -12,16 +12,13 @@ What it does:
 4. Pushes the Dynatrace Otel Collector
 5. Sends OTel data to Dynatrace
 
-## Install Podman Desktop and Minikube
+## Install Colima
 
-Visit the podman release page and install the latest
+```
+brew install colima
+```
 
-[Podman on Github](https://github.com/containers/podman/releases)
-
-Visit the Minkube release page, grab the latest, and put it in /usr/local/bin/
-
-[Minikube on Github](https://github.com/kubernetes/minikube/releases)
-
+Then clone this repo and run the setup
 
 ```
 git clone https://github.com/mreider/k8s.git
