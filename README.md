@@ -7,9 +7,8 @@ This is my Colima setup for my Mac Silicon
 What it does:
 
 1. Asks for a Dynatrace token
-2. Containerizes a small Ruby app
-3. Pushes the app
-4. Pushes the Dynatrace Otel Collector
+2. Containerizes a small Python app
+3. Pushes the app and the Dynatrace Otel Collector
 5. Sends OTel data to Dynatrace
 
 ## Install Colima
