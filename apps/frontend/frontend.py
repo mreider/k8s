@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import requests
 import time
 import random
@@ -6,6 +6,7 @@ from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.propagate import inject, extract
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
 from opentelemetry.trace import SpanKind
@@ -26,9 +27,12 @@ BACKEND_URL = "http://backend-service:6000/"
 
 @app.route("/")
 def order():
-    with tracer.start_as_current_span("call-backend", kind=SpanKind.CLIENT):
+    context = extract(request.headers)
+    with tracer.start_as_current_span("frontend-to-backend", context=context, kind=SpanKind.CLIENT):
+        headers = {}
+        inject(trace.get_current_span().context, headers)
         time.sleep(random.uniform(0.2, 0.8))
-        response = requests.get(BACKEND_URL)
+        response = requests.get(BACKEND_URL, headers=headers)
         return f"Backend says: {response.text}", response.status_code
 
 if __name__ == "__main__":

@@ -109,11 +109,21 @@ data:
           http:
             endpoint: 0.0.0.0:4318
     exporters:
+      otlp:
+        endpoint: "jaeger-collector:4317"
+        tls:
+          insecure: true
       otlphttp:
         endpoint: "${DT_API_ENDPOINT}/api/v2/otlp"
         headers:
           Authorization: "Api-Token ${DT_API_TOKEN}"
     processors:
+      filter:
+        metrics:
+          exclude:
+            match_type: strict
+            metric_names:
+              - http.server.duration
       k8sattributes:
         extract:
           metadata:
@@ -148,10 +158,10 @@ data:
         traces:
           receivers: [otlp]
           processors: [k8sattributes, probabilistic_sampler]
-          exporters: [otlphttp]
+          exporters: [otlphttp,otlp]
         metrics:
           receivers: [otlp]
-          processors: [k8sattributes]
+          processors: [k8sattributes,filter]
           exporters: [otlphttp]
         logs:
           receivers: [otlp]

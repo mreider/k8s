@@ -15,7 +15,7 @@ nerdctl -n k8s.io load -i frontend-v1.0.tar
 nerdctl -n k8s.io load -i proxy-v1.0.tar
 # Deploy
 echo "Deploying"
-kubectl  apply -f deployments/namespace-orders.yaml
+kubectl create namespace orders
 kubectl delete secret dynatrace-otelcol-dt-api-credentials -n orders
 kubectl delete configmap dynatrace-otel-collector-config -n orders
 kubectl create secret generic dynatrace-otelcol-dt-api-credentials -n orders --from-literal=DT_API_ENDPOINT="https://$DT_ENDPOINT" --from-literal=DT_API_TOKEN="$DT_TOKEN"
